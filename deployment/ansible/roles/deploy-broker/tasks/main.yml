@@ -1,0 +1,53 @@
+---
+# Role: deploy-broker
+# Deploys MessageBroker using Docker
+
+- name: Check if Docker image exists locally
+  command: docker image inspect {{ docker_registry }}/{{ docker_image }}:{{ messagebroker_version }}
+  register: docker_image_check
+  failed_when: false
+  changed_when: false
+
+- name: Build Docker image
+  docker_image:
+    name: "{{ docker_image }}"
+    tag: "{{ messagebroker_version }}"
+    source: build
+    build:
+      path: /opt/messagebroker/src
+      dockerfile: deployment/docker/Dockerfile
+  when: docker_image_check.rc != 0
+
+- name: Pull Docker image from registry
+  command: docker pull {{ docker_registry }}/{{ docker_image }}:{{ messagebroker_version }}
+  when: docker_image_check.rc == 0
+
+- name: Create Docker container
+  docker_container:
+    name: messagebroker-{{ inventory_hostname_short }}
+    image: "{{ docker_registry }}/{{ docker_image }}:{{ messagebroker_version }}"
+    state: present
+    ports:
+      - "9092:9092"
+    volumes:
+      - "{{ messagebroker_data_dir }}:/app/data"
+      - "{{ messagebroker_config_dir }}:/etc/messagebroker"
+      - "{{ messagebroker_log_dir }}:/var/log/messagebroker"
+    env:
+      BROKER_ID: "{{ groups.messagebroker.index(inventory_hostname) + 1 }}"
+      BROKER_HOST: "{{ ansible_default_ipv4.address }}"
+      BROKER_PORT: "9092"
+      COORDINATOR_URL: "{{ etcd_servers }}"
+      DATA_DIR: "/app/data"
+    restart_policy: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9092/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+- name: Start Docker container
+  docker_container:
+    name: messagebroker-{{ inventory_hostname_short }}
+    state: started

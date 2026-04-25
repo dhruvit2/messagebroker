@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/dhruvit2/messagebroker/pkg/pb";
+
+service MessageBroker {
+  rpc CreateTopic(CreateTopicRequest) returns (CreateTopicResponse);
+  rpc ProduceMessage(ProduceRequest) returns (ProduceResponse);
+  rpc ConsumeMessages(ConsumeRequest) returns (ConsumeResponse);
+  rpc GetTopicMetadata(GetTopicMetadataRequest) returns (TopicMetadata);
+  rpc BrokerMetadata(BrokerMetadataRequest) returns (BrokerMetadataResponse);
+}
+
+message CreateTopicRequest {
+  string topic = 1;
+  int32 num_partitions = 2;
+  int32 replication_factor = 3;
+}
+
+message CreateTopicResponse {
+  string topic = 1;
+  int32 partitions = 2;
+  bool success = 3;
+}
+
+message ProduceRequest {
+  string topic = 1;
+  int32 partition = 2;
+  bytes key = 3;
+  bytes value = 4;
+}
+
+message ProduceResponse {
+  string topic = 1;
+  int32 partition = 2;
+  int64 offset = 3;
+}
+
+message ConsumeRequest {
+  string topic = 1;
+  int32 partition = 2;
+  int64 offset = 3;
+  int32 max_messages = 4;
+}
+
+message Message {
+  bytes key = 1;
+  bytes value = 2;
+  int64 offset = 3;
+}
+
+message ConsumeResponse {
+  string topic = 1;
+  int32 partition = 2;
+  repeated Message messages = 3;
+}
+
+message GetTopicMetadataRequest {
+  string topic = 1;
+}
+
+message PartitionMetadata {
+  int32 id = 1;
+  int32 leader = 2;
+  repeated int32 replicas = 3;
+  repeated int32 isr = 4;
+}
+
+message TopicMetadata {
+  string topic = 1;
+  repeated PartitionMetadata partitions = 2;
+}
+
+message BrokerMetadataRequest {}
+
+message BrokerMetadataResponse {
+  int32 id = 1;
+  string host = 2;
+  int32 port = 3;
+  bool is_healthy = 4;
+}

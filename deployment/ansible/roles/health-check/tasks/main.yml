@@ -1,0 +1,31 @@
+---
+# Role: health-check
+# Performs health checks on deployed brokers
+
+- name: Wait for broker to be healthy
+  uri:
+    url: "http://{{ ansible_default_ipv4.address }}:9092/health"
+    method: GET
+    status_code: 200
+  register: broker_health
+  until: broker_health.status == 200
+  retries: 30
+  delay: 10
+
+- name: Check broker metadata
+  command: "curl -s http://{{ ansible_default_ipv4.address }}:9092/metadata"
+  register: broker_metadata
+
+- name: Display broker health status
+  debug:
+    msg: "Broker {{ inventory_hostname }} is healthy and responding"
+
+- name: Verify cluster connectivity
+  command: "curl -s http://{% for host in groups['messagebroker'] %}{{ hostvars[host]['ansible_default_ipv4']['address'] }}:9092/status{% if not loop.last %} && curl -s http://{% endif %}{% endfor %}"
+  register: cluster_status
+
+- name: Verify replication setup
+  command: |
+    curl -s http://{{ ansible_default_ipv4.address }}:9092/replicas \
+      | jq '.replication_factor == {{ replication_factor }} and .min_isr == {{ min_isr }}'
+  register: replication_check

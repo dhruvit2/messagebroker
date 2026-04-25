@@ -1,0 +1,51 @@
+---
+# Role: configure-broker
+# Configures MessageBroker broker instances
+
+- name: Create messagebroker user
+  user:
+    name: "{{ messagebroker_user }}"
+    home: "{{ messagebroker_home }}"
+    shell: /bin/bash
+    createhome: yes
+    system: yes
+
+- name: Create messagebroker directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ messagebroker_user }}"
+    group: "{{ messagebroker_group }}"
+    mode: '0755'
+  loop:
+    - "{{ messagebroker_home }}"
+    - "{{ messagebroker_data_dir }}"
+    - "{{ messagebroker_log_dir }}"
+    - "{{ messagebroker_config_dir }}"
+
+- name: Create broker configuration file
+  template:
+    src: broker-config.yaml.j2
+    dest: "{{ messagebroker_config_dir }}/broker-config.yaml"
+    owner: "{{ messagebroker_user }}"
+    group: "{{ messagebroker_group }}"
+    mode: '0644'
+  vars:
+    broker_id: "{{ inventory_hostname_short | regex_replace('[a-z]+-', '') }}"
+    broker_host: "{{ ansible_default_ipv4.address }}"
+
+- name: Create systemd service file
+  template:
+    src: messagebroker.service.j2
+    dest: /etc/systemd/system/messagebroker.service
+    mode: '0644'
+  notify:
+    - Reload systemd
+
+- name: Create broker startup script
+  template:
+    src: start-broker.sh.j2
+    dest: "{{ messagebroker_home }}/start-broker.sh"
+    owner: "{{ messagebroker_user }}"
+    group: "{{ messagebroker_group }}"
+    mode: '0755'

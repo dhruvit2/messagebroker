@@ -1,0 +1,41 @@
+#!/bin/bash
+set -e
+
+BROKER_ID={{ groups.messagebroker.index(inventory_hostname) + 1 }}
+BROKER_HOST={{ ansible_default_ipv4.address }}
+BROKER_PORT=9092
+COORDINATOR_URL={{ etcd_servers }}
+DATA_DIR={{ messagebroker_data_dir }}
+LOG_DIR={{ messagebroker_log_dir }}
+
+echo "Starting MessageBroker broker $BROKER_ID..."
+
+# Set environment variables
+export BROKER_ID
+export BROKER_HOST
+export BROKER_PORT
+export COORDINATOR_URL
+export DATA_DIR
+
+# Run broker
+docker run \
+  --name messagebroker-broker-$BROKER_ID \
+  --detach \
+  --restart always \
+  --network host \
+  -v $DATA_DIR:/app/data \
+  -v {{ messagebroker_config_dir }}:/etc/messagebroker \
+  -v $LOG_DIR:/var/log/messagebroker \
+  -e BROKER_ID=$BROKER_ID \
+  -e BROKER_HOST=$BROKER_HOST \
+  -e BROKER_PORT=$BROKER_PORT \
+  -e COORDINATOR_URL=$COORDINATOR_URL \
+  -e DATA_DIR=/app/data \
+  docker.io/messagebroker:{{ messagebroker_version }} \
+  --id=$BROKER_ID \
+  --host=$BROKER_HOST \
+  --port=$BROKER_PORT \
+  --coordinator=$COORDINATOR_URL \
+  --data-dir=/app/data
+
+echo "MessageBroker broker $BROKER_ID started successfully"
