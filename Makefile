@@ -9,7 +9,7 @@ HELM_RELEASE ?= messagebroker
 # Local run configuration
 BROKER_ID ?= 1
 BROKER_HOST ?= localhost
-BROKER_PORT ?= 9091
+BROKER_PORT ?= 9092
 COORDINATOR_URL ?= localhost:2379
 DATA_DIR ?= /tmp/messagebroker_test
 
@@ -24,9 +24,9 @@ help:
 	@echo "  make build-consumer     - Build consumer binary"
 	@echo ""
 	@echo "Local Development:"
-	@echo "  make run-broker         - Run broker locally (port 9091)"
+	@echo "  make run-broker         - Run broker locally (port 9092)"
 	@echo "  make run-producer       - Run producer example"
-	@echo "  make run-consumer       - Run consumer example (connects to broker on 9091)"
+	@echo "  make run-consumer       - Run consumer example (connects to broker on 9092)"
 	@echo "  make run-local          - Build and run broker (quick start)"
 	@echo ""
 	@echo "Docker:"
@@ -88,17 +88,17 @@ push-docker: build-docker
 docker-run: build-docker
 	@echo "Starting MessageBroker in Docker..."
 	docker run -d --name messagebroker --network=tsdb-network \
-		-p 9091:9091 \
+		-p 9092:9092 \
 		-e BROKER_ID=1 \
 		-e BROKER_HOST=messagebroker \
-		-e BROKER_PORT=9091 \
+		-e BROKER_PORT=9092 \
 		-e COORDINATOR_URL=localhost:2379 \
 		-e DATA_DIR=/tmp/messagebroker_test \
 		$(DOCKER_REGISTRY)/$(DOCKER_IMAGE):$(VERSION)
 	@echo "✓ MessageBroker started in Docker"
 	@echo "  Service: messagebroker"
 	@echo "  Network: tsdb-network"
-	@echo "  Port: 9091"
+	@echo "  Port: 9092"
 
 docker-stop:
 	@echo "Stopping MessageBroker container..."

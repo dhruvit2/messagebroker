@@ -36,15 +36,15 @@ COPY --from=builder /build/bin/broker /app/broker
 RUN mkdir -p /app/data
 
 # Expose gRPC port for e2e network
-EXPOSE 9091
+EXPOSE 9092
 
 # Set environment variables (can be overridden)
 ENV BROKER_HOST=0.0.0.0 \
-    BROKER_PORT=9091 \
+    BROKER_PORT=9092 \
     BROKER_ID=1 \
     COORDINATOR_URL=localhost:2379 \
     DATA_DIR=/app/data
 
 # Run broker with gRPC port 9091
 ENTRYPOINT ["/app/broker"]
-CMD ["--host", "0.0.0.0", "--port", "9091", "--id", "1"]
+CMD ["--host", "0.0.0.0", "--port", "9092", "--id", "1"]
