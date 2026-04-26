@@ -1,9 +1,9 @@
 # Default values for messagebroker
 
-replicaCount: 3
+replicaCount: 1
 
 image:
-  repository: messagebroker
+  repository: dhruvit2/messagebroker
   pullPolicy: IfNotPresent
   tag: "1.0.0"
 
@@ -55,8 +55,8 @@ coordinator:
 
 storage:
   enabled: true
-  size: 10Gi
-  storageClass: "standard"
+  size: 2Gi
+  storageClass: "local-path"
   mountPath: /app/data
 
 resources:
