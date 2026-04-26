@@ -110,8 +110,8 @@ readinessProbe:
 # Persistence configuration
 persistence:
   enabled: true
-  storageClassName: "standard"
-  size: 10Gi
+  storageClassName: "local-path"
+  size: 1Gi
 
 # Service Monitor for Prometheus
 serviceMonitor:
