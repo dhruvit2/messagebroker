@@ -7,12 +7,11 @@
 package pb
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -787,7 +786,7 @@ const file_pkg_pb_messagebroker_proto_rawDesc = "" +
 	"\x0eProduceMessage\x12\x12.pb.ProduceRequest\x1a\x13.pb.ProduceResponse\x12:\n" +
 	"\x0fConsumeMessages\x12\x12.pb.ConsumeRequest\x1a\x13.pb.ConsumeResponse\x12B\n" +
 	"\x10GetTopicMetadata\x12\x1b.pb.GetTopicMetadataRequest\x1a\x11.pb.TopicMetadata\x12G\n" +
-	"\x0eBrokerMetadata\x12\x19.pb.BrokerMetadataRequest\x1a\x1a.pb.BrokerMetadataResponseB)Z'github.com/dhruvit2/messagebroker/pkg/pbb\x06proto3"
+	"\x0eBrokerMetadata\x12\x19.pb.BrokerMetadataRequest\x1a\x1a.pb.BrokerMetadataResponseB*Z(github.com/dhruvit2/messagebroker/pkg/pbb\x06proto3"
 
 var (
 	file_pkg_pb_messagebroker_proto_rawDescOnce sync.Once

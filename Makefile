@@ -2,7 +2,7 @@
 
 DOCKER_REGISTRY ?= docker.io
 DOCKER_IMAGE ?= messagebroker
-VERSION ?= 1.0.0
+VERSION ?= 0.0.1
 K8S_NAMESPACE ?= messagebroker
 HELM_RELEASE ?= messagebroker
 

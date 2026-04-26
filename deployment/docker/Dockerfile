@@ -5,6 +5,11 @@ RUN apk add --no-cache git make protobuf-dev gcc musl-dev
 
 WORKDIR /build
 
+# Generate proto files with pinned versions for consistency
+# Using versions that match go.mod dependencies
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.11 && \
+    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.5.1
+
 # Copy go mod and sum files
 COPY go.mod go.sum* ./
 
@@ -14,9 +19,7 @@ RUN go mod download
 # Copy source code
 COPY . .
 
-# Generate proto files
-RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest && \
-    go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+#RUN make proto
 
 # Build broker binary
 RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
