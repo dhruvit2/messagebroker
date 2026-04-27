@@ -110,7 +110,7 @@ readinessProbe:
 # Persistence configuration
 persistence:
   enabled: true
-  storageClassName: "local-path"
+  storageClassName: "longhorn-custom"
   size: 1Gi
 
 # Service Monitor for Prometheus
