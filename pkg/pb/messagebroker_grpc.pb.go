@@ -19,11 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MessageBroker_CreateTopic_FullMethodName      = "/pb.MessageBroker/CreateTopic"
-	MessageBroker_ProduceMessage_FullMethodName   = "/pb.MessageBroker/ProduceMessage"
-	MessageBroker_ConsumeMessages_FullMethodName  = "/pb.MessageBroker/ConsumeMessages"
-	MessageBroker_GetTopicMetadata_FullMethodName = "/pb.MessageBroker/GetTopicMetadata"
-	MessageBroker_BrokerMetadata_FullMethodName   = "/pb.MessageBroker/BrokerMetadata"
+	MessageBroker_CreateTopic_FullMethodName           = "/pb.MessageBroker/CreateTopic"
+	MessageBroker_ProduceMessage_FullMethodName        = "/pb.MessageBroker/ProduceMessage"
+	MessageBroker_ConsumeMessages_FullMethodName       = "/pb.MessageBroker/ConsumeMessages"
+	MessageBroker_GetTopicMetadata_FullMethodName      = "/pb.MessageBroker/GetTopicMetadata"
+	MessageBroker_BrokerMetadata_FullMethodName        = "/pb.MessageBroker/BrokerMetadata"
+	MessageBroker_JoinConsumerGroup_FullMethodName     = "/pb.MessageBroker/JoinConsumerGroup"
+	MessageBroker_LeaveConsumerGroup_FullMethodName    = "/pb.MessageBroker/LeaveConsumerGroup"
+	MessageBroker_FetchAssignments_FullMethodName      = "/pb.MessageBroker/FetchAssignments"
+	MessageBroker_CommitOffset_FullMethodName          = "/pb.MessageBroker/CommitOffset"
+	MessageBroker_FetchOffset_FullMethodName           = "/pb.MessageBroker/FetchOffset"
+	MessageBroker_ListConsumerGroups_FullMethodName    = "/pb.MessageBroker/ListConsumerGroups"
+	MessageBroker_DescribeConsumerGroup_FullMethodName = "/pb.MessageBroker/DescribeConsumerGroup"
 )
 
 // MessageBrokerClient is the client API for MessageBroker service.
@@ -35,6 +42,13 @@ type MessageBrokerClient interface {
 	ConsumeMessages(ctx context.Context, in *ConsumeRequest, opts ...grpc.CallOption) (*ConsumeResponse, error)
 	GetTopicMetadata(ctx context.Context, in *GetTopicMetadataRequest, opts ...grpc.CallOption) (*TopicMetadata, error)
 	BrokerMetadata(ctx context.Context, in *BrokerMetadataRequest, opts ...grpc.CallOption) (*BrokerMetadataResponse, error)
+	JoinConsumerGroup(ctx context.Context, in *JoinConsumerGroupRequest, opts ...grpc.CallOption) (*JoinConsumerGroupResponse, error)
+	LeaveConsumerGroup(ctx context.Context, in *LeaveConsumerGroupRequest, opts ...grpc.CallOption) (*LeaveConsumerGroupResponse, error)
+	FetchAssignments(ctx context.Context, in *FetchAssignmentsRequest, opts ...grpc.CallOption) (*FetchAssignmentsResponse, error)
+	CommitOffset(ctx context.Context, in *CommitOffsetRequest, opts ...grpc.CallOption) (*CommitOffsetResponse, error)
+	FetchOffset(ctx context.Context, in *FetchOffsetRequest, opts ...grpc.CallOption) (*FetchOffsetResponse, error)
+	ListConsumerGroups(ctx context.Context, in *ListConsumerGroupsRequest, opts ...grpc.CallOption) (*ListConsumerGroupsResponse, error)
+	DescribeConsumerGroup(ctx context.Context, in *DescribeConsumerGroupRequest, opts ...grpc.CallOption) (*DescribeConsumerGroupResponse, error)
 }
 
 type messageBrokerClient struct {
@@ -95,6 +109,76 @@ func (c *messageBrokerClient) BrokerMetadata(ctx context.Context, in *BrokerMeta
 	return out, nil
 }
 
+func (c *messageBrokerClient) JoinConsumerGroup(ctx context.Context, in *JoinConsumerGroupRequest, opts ...grpc.CallOption) (*JoinConsumerGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(JoinConsumerGroupResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_JoinConsumerGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) LeaveConsumerGroup(ctx context.Context, in *LeaveConsumerGroupRequest, opts ...grpc.CallOption) (*LeaveConsumerGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(LeaveConsumerGroupResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_LeaveConsumerGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) FetchAssignments(ctx context.Context, in *FetchAssignmentsRequest, opts ...grpc.CallOption) (*FetchAssignmentsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FetchAssignmentsResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_FetchAssignments_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) CommitOffset(ctx context.Context, in *CommitOffsetRequest, opts ...grpc.CallOption) (*CommitOffsetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CommitOffsetResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_CommitOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) FetchOffset(ctx context.Context, in *FetchOffsetRequest, opts ...grpc.CallOption) (*FetchOffsetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FetchOffsetResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_FetchOffset_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) ListConsumerGroups(ctx context.Context, in *ListConsumerGroupsRequest, opts ...grpc.CallOption) (*ListConsumerGroupsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListConsumerGroupsResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_ListConsumerGroups_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageBrokerClient) DescribeConsumerGroup(ctx context.Context, in *DescribeConsumerGroupRequest, opts ...grpc.CallOption) (*DescribeConsumerGroupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DescribeConsumerGroupResponse)
+	err := c.cc.Invoke(ctx, MessageBroker_DescribeConsumerGroup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageBrokerServer is the server API for MessageBroker service.
 // All implementations must embed UnimplementedMessageBrokerServer
 // for forward compatibility.
@@ -104,6 +188,13 @@ type MessageBrokerServer interface {
 	ConsumeMessages(context.Context, *ConsumeRequest) (*ConsumeResponse, error)
 	GetTopicMetadata(context.Context, *GetTopicMetadataRequest) (*TopicMetadata, error)
 	BrokerMetadata(context.Context, *BrokerMetadataRequest) (*BrokerMetadataResponse, error)
+	JoinConsumerGroup(context.Context, *JoinConsumerGroupRequest) (*JoinConsumerGroupResponse, error)
+	LeaveConsumerGroup(context.Context, *LeaveConsumerGroupRequest) (*LeaveConsumerGroupResponse, error)
+	FetchAssignments(context.Context, *FetchAssignmentsRequest) (*FetchAssignmentsResponse, error)
+	CommitOffset(context.Context, *CommitOffsetRequest) (*CommitOffsetResponse, error)
+	FetchOffset(context.Context, *FetchOffsetRequest) (*FetchOffsetResponse, error)
+	ListConsumerGroups(context.Context, *ListConsumerGroupsRequest) (*ListConsumerGroupsResponse, error)
+	DescribeConsumerGroup(context.Context, *DescribeConsumerGroupRequest) (*DescribeConsumerGroupResponse, error)
 	mustEmbedUnimplementedMessageBrokerServer()
 }
 
@@ -128,6 +219,27 @@ func (UnimplementedMessageBrokerServer) GetTopicMetadata(context.Context, *GetTo
 }
 func (UnimplementedMessageBrokerServer) BrokerMetadata(context.Context, *BrokerMetadataRequest) (*BrokerMetadataResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method BrokerMetadata not implemented")
+}
+func (UnimplementedMessageBrokerServer) JoinConsumerGroup(context.Context, *JoinConsumerGroupRequest) (*JoinConsumerGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method JoinConsumerGroup not implemented")
+}
+func (UnimplementedMessageBrokerServer) LeaveConsumerGroup(context.Context, *LeaveConsumerGroupRequest) (*LeaveConsumerGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LeaveConsumerGroup not implemented")
+}
+func (UnimplementedMessageBrokerServer) FetchAssignments(context.Context, *FetchAssignmentsRequest) (*FetchAssignmentsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FetchAssignments not implemented")
+}
+func (UnimplementedMessageBrokerServer) CommitOffset(context.Context, *CommitOffsetRequest) (*CommitOffsetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CommitOffset not implemented")
+}
+func (UnimplementedMessageBrokerServer) FetchOffset(context.Context, *FetchOffsetRequest) (*FetchOffsetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FetchOffset not implemented")
+}
+func (UnimplementedMessageBrokerServer) ListConsumerGroups(context.Context, *ListConsumerGroupsRequest) (*ListConsumerGroupsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListConsumerGroups not implemented")
+}
+func (UnimplementedMessageBrokerServer) DescribeConsumerGroup(context.Context, *DescribeConsumerGroupRequest) (*DescribeConsumerGroupResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DescribeConsumerGroup not implemented")
 }
 func (UnimplementedMessageBrokerServer) mustEmbedUnimplementedMessageBrokerServer() {}
 func (UnimplementedMessageBrokerServer) testEmbeddedByValue()                       {}
@@ -240,6 +352,132 @@ func _MessageBroker_BrokerMetadata_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageBroker_JoinConsumerGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JoinConsumerGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).JoinConsumerGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_JoinConsumerGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).JoinConsumerGroup(ctx, req.(*JoinConsumerGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_LeaveConsumerGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LeaveConsumerGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).LeaveConsumerGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_LeaveConsumerGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).LeaveConsumerGroup(ctx, req.(*LeaveConsumerGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_FetchAssignments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchAssignmentsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).FetchAssignments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_FetchAssignments_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).FetchAssignments(ctx, req.(*FetchAssignmentsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_CommitOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommitOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).CommitOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_CommitOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).CommitOffset(ctx, req.(*CommitOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_FetchOffset_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchOffsetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).FetchOffset(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_FetchOffset_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).FetchOffset(ctx, req.(*FetchOffsetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_ListConsumerGroups_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListConsumerGroupsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).ListConsumerGroups(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_ListConsumerGroups_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).ListConsumerGroups(ctx, req.(*ListConsumerGroupsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageBroker_DescribeConsumerGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DescribeConsumerGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageBrokerServer).DescribeConsumerGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageBroker_DescribeConsumerGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageBrokerServer).DescribeConsumerGroup(ctx, req.(*DescribeConsumerGroupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageBroker_ServiceDesc is the grpc.ServiceDesc for MessageBroker service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +504,34 @@ var MessageBroker_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BrokerMetadata",
 			Handler:    _MessageBroker_BrokerMetadata_Handler,
+		},
+		{
+			MethodName: "JoinConsumerGroup",
+			Handler:    _MessageBroker_JoinConsumerGroup_Handler,
+		},
+		{
+			MethodName: "LeaveConsumerGroup",
+			Handler:    _MessageBroker_LeaveConsumerGroup_Handler,
+		},
+		{
+			MethodName: "FetchAssignments",
+			Handler:    _MessageBroker_FetchAssignments_Handler,
+		},
+		{
+			MethodName: "CommitOffset",
+			Handler:    _MessageBroker_CommitOffset_Handler,
+		},
+		{
+			MethodName: "FetchOffset",
+			Handler:    _MessageBroker_FetchOffset_Handler,
+		},
+		{
+			MethodName: "ListConsumerGroups",
+			Handler:    _MessageBroker_ListConsumerGroups_Handler,
+		},
+		{
+			MethodName: "DescribeConsumerGroup",
+			Handler:    _MessageBroker_DescribeConsumerGroup_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

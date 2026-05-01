@@ -64,13 +64,19 @@ spec:
             fieldRef:
               fieldPath: metadata.namespace
         - name: BROKER_ID
-          value: "1"
+          value: ""
         - name: BROKER_HOST
           value: "$(POD_NAME).{{ include "messagebroker.fullname" . }}-headless.{{ .Release.Namespace }}.svc.cluster.local"
         - name: BROKER_PORT
           value: "{{ .Values.broker.port }}"
         - name: COORDINATOR_URL
           value: {{ .Values.coordinator.url }}
+        - name: COORDINATOR_TYPE
+          value: {{ .Values.coordinator.type }}
+        - name: ETCD_USERNAME
+          value: {{ .Values.coordinator.username | quote }}
+        - name: ETCD_PASSWORD
+          value: {{ .Values.coordinator.password | quote }}
         - name: DATA_DIR
           value: {{ .Values.storage.mountPath }}
         

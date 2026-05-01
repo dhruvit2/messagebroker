@@ -5,7 +5,7 @@ replicaCount: 1
 image:
   repository: dhruvit2/messagebroker
   pullPolicy: IfNotPresent
-  tag: "1.0.0"
+  tag: "5.0.16"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,18 +40,20 @@ service:
   annotations: {}
 
 broker:
-  id: 1
   host: "0.0.0.0"
   port: 9092
-  replicationFactor: 3
-  minISR: 2
+  replicationFactor: 1
+  minISR: 1
   retentionMs: 604800000  # 7 days
   segmentBytes: 1073741824  # 1GB
   maxPartitions: 1000
 
 coordinator:
   enabled: true
-  url: "etcd:2379"
+  url: "telemetry-etcd:2379"
+  type: "etcd"
+  username: "root"  # Set via secrets in production
+  password: "root123"  # Set via secrets in production
 
 storage:
   enabled: true

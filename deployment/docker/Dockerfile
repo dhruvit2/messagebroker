@@ -25,13 +25,17 @@ COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
     -o /build/bin/broker ./cmd/broker
 
+# Build admin CLI binary
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo \
+    -o /build/bin/admin ./cmd/admin
+
 # Build producer binary
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
-    -o /build/bin/producer ./cmd/producer
+#RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
+#    -o /build/bin/producer ./cmd/producer
 
 # Build consumer binary
-RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
-    -o /build/bin/consumer ./cmd/consumer
+#RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo \
+#    -o /build/bin/consumer ./cmd/consumer
 
 # Runtime stage
 FROM alpine:3.18
@@ -42,9 +46,11 @@ WORKDIR /app
 
 # Copy binaries from builder
 COPY --from=builder /build/bin/broker /app/broker
-COPY --from=builder /build/bin/producer /app/producer
-COPY --from=builder /build/bin/consumer /app/consumer
+COPY --from=builder /build/bin/admin /usr/local/bin/admin
+#COPY --from=builder /build/bin/producer /app/producer
+#COPY --from=builder /build/bin/consumer /app/consumer
 
+RUN chmod +x /usr/local/bin/admin
 # Create data directory
 RUN mkdir -p /app/data
 
